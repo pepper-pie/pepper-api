@@ -1,0 +1,119 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.tokenColorCustomizations": {
+        "[Default Dark+]": {
+            "textMateRules": [
+                {
+                    "scope": "string.quoted.docstring.multi.python",
+                    "settings": {
+                        "foreground": "#6a9955"
+                    }
+                }
+            ]
+        }
+    },
+    "editor.wordBasedSuggestions": "allDocuments",
+    "editor.defaultFormatter": "ms-python.vscode-pylance",
+    "editor.formatOnType": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "gitlens.codeLens.symbolScopes": [
+        "!Module"
+    ],
+    "cSpell.words": [
+        "Aerei",
+        "ANTONOV",
+        "Asean",
+        "dateutil",
+        "EMBRAER",
+        "iconcile",
+        "mtom",
+        "mtow",
+        "Regionale",
+        "relativedelta",
+        "SUKHOI",
+        "Trasporto",
+        "TUPOLEV"
+    ],
+    "terminal.integrated.profiles.osx": {
+        "zsh": {
+            "path": "zsh",
+            "args": [
+                "-l"
+            ]
+        },
+        "server": {
+            "path": "${workspaceFolder}/env/bin/python",
+            "args": [
+                "manage.py",
+                "runserver"
+            ],
+            "overrideName": true,
+            "color": "terminal.ansiGreen",
+            "icon": "server"
+        },
+        "shell": {
+            "path": "${workspaceFolder}/env/bin/python",
+            "args": [
+                "manage.py",
+                "shell_plus"
+            ],
+            "overrideName": true,
+            "color": "terminal.ansiGreen"
+        },
+        "worker": {
+            "path": "${workspaceFolder}/env/bin/celery",
+            "args": [
+                "-A",
+                "finance_charter",
+                "worker",
+                "-l",
+                "info",
+                "--pool",
+                "threads"
+            ],
+            "overrideName": true,
+            "icon": "array"
+        },
+        "flower": {
+            "path": "${workspaceFolder}/env/bin/celery",
+            "args": [
+                "-b",
+                "redis://localhost:6379",
+                "flower",
+                "-l",
+                "info",
+            ],
+            "overrideName": true,
+            "icon": "device-camera"
+        },
+        "redis": {
+            "path": "/usr/local/bin/redis-cli",
+            "args": [],
+            "overrideName": true,
+            "icon": "heart",
+            "color": "terminal.ansiRed"
+        },
+        "psql": {
+            "path": "/usr/local/opt/postgresql/bin/psql",
+            "args": [
+                "fin_charter"
+            ],
+            "overrideName": true,
+            "color": "terminal.ansiBlue",
+            "icon": "database"
+        },
+        "error-log": {
+            "path": "/usr/bin/tail",
+            "args": [
+                "-f",
+                "logs/errors/errors.log"
+            ],
+            "overrideName": true,
+            "color": "terminal.ansiRed",
+            "icon": "error"
+        }
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+}

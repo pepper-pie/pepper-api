@@ -31,6 +31,7 @@ DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
+SHELL_PLUS = "ipython"
 
 # Application definition
 
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'transactions',
-    'accounts'
+    'accounts',
+    'import_export',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
