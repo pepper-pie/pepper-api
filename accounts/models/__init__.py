@@ -1,0 +1,1 @@
+from .personal_accounts_model import *
