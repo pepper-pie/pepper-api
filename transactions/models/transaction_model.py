@@ -10,7 +10,7 @@ class Transaction(models.Model):
 
     # Category and subcategory
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
-    subcategory = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True, blank=True)
+    sub_category = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True, blank=True)
 
     # Nominal account choices
     NOMINAL_ACCOUNT_CHOICES = [
@@ -40,7 +40,7 @@ class Transaction(models.Model):
         constraints = [
             # Allow duplicate narrations only when nominal_account is 'TRANSFER' and include the date
             models.UniqueConstraint(
-                fields=['narration', 'nominal_account', 'date'],
+                fields=['narration', 'personal_account', 'date', 'debit_amount', 'credit_amount'],
                 name='unique_narration_nominal_date_except_transfer'
             )
         ]

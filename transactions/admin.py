@@ -6,9 +6,9 @@ from .models import Transaction, Category, SubCategory
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('date', 'narration', 'category', 'subcategory', 'debit_amount', 'credit_amount', 'nominal_account', 'personal_account')
-    search_fields = ('narration', 'category__name', 'subcategory__name', 'nominal_account')
-    list_filter = ('category', 'subcategory', 'nominal_account', 'personal_account')
+    list_display = ('date', 'narration', 'category', 'sub_category', 'debit_amount', 'credit_amount', 'running_balance', 'nominal_account', 'personal_account')
+    search_fields = ('narration', 'category__name', 'sub_category__name', 'nominal_account')
+    list_filter = ('category', 'sub_category', 'nominal_account', 'personal_account')
 
 
 # Resource for Category import/export
