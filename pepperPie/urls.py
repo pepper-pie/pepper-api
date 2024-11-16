@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from transactions.views import upload_transactions
+from transactions.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/upload-transactions/', upload_transactions, name='upload-transactions'),
+     path('api/monthly-report/', monthly_report, name='monthly-report'),
 ]

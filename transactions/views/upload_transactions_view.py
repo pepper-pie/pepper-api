@@ -7,7 +7,7 @@ from rest_framework import status
 from transactions.models import Transaction
 from django.db import transaction  # Import Django's transaction module
 
-from .serializers import TransactionSerializer
+from ..serializers import TransactionSerializer
 import os
 from django.core.files.storage import FileSystemStorage
 
