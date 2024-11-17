@@ -17,6 +17,7 @@ class TransactionSerializer(serializers.Serializer):
     narration = serializers.CharField(max_length=255)
     debit_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
     credit_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
+    running_balance = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
     category = serializers.SlugRelatedField(
         queryset=Category.objects.all(),
         slug_field="name",  # Match by 'name'
