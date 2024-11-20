@@ -106,7 +106,6 @@ def monthly_reports_excel(request: Request) -> HttpResponse:
         """
         
         isTxnTable = table_name == "TransactionsTable"
-        isExpenseSummaryTable = table_name == "ExpenseSummaryTable"
         endrow = startrow + len(df)
         endcol = startcol + len(df.columns) - 1
         table_range = f"{chr(65 + startcol)}{startrow + 1}:{chr(65 + endcol)}{endrow}"  # Convert to Excel-style range
