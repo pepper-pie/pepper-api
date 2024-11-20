@@ -1,7 +1,7 @@
 from django.http import JsonResponse
-from transactions.models import Transaction
-from django.db.models import Sum, F
 from rest_framework.decorators import api_view
+
+from transactions.services.expense_summary_service import expense_summary_data
 
 
 @api_view(["GET"])
@@ -22,25 +22,6 @@ def expense_summary(request):
     except ValueError:
         return JsonResponse({"error": "Month and year must be integers."}, status=400)
 
-    expense_data = (
-        Transaction.objects.filter(nominal_account="EXPENSE").values("personal_account__name")
-        .annotate(
-            debit=Sum("debit_amount", default=0),
-            credit=Sum("credit_amount", default=0),
-            total=Sum(F("debit_amount") - F("credit_amount"), default=0),
-        )
-        .filter(date__year=year, date__month=month)
-        .order_by("personal_account__name")
-    )
+    expense_data = expense_summary_data(month, year)
 
-    formatted_data = [
-        {
-            "account_name": row["personal_account__name"],
-            "debit": row["debit"],
-            "credit": row["credit"],
-            "total": row["total"],
-        }
-        for row in expense_data
-    ]
-
-    return JsonResponse(formatted_data, safe=False)
+    return JsonResponse(expense_data, safe=False)

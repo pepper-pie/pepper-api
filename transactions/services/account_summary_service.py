@@ -5,6 +5,7 @@ from django.db.models.functions import Coalesce
 from accounts.models import PersonalAccount
 from transactions.models import Transaction
 from datetime import datetime, timedelta
+import pandas as pd
 
 
 def get_monthly_report_data(month: int, year: int) -> List[Dict[str, Any]]:
@@ -48,7 +49,7 @@ def get_monthly_report_data(month: int, year: int) -> List[Dict[str, Any]]:
 
     # Generate report
     report: List[Dict[str, Any]] = []
-    accounts: QuerySet[PersonalAccount] = PersonalAccount.objects.all()
+    accounts: QuerySet[PersonalAccount] = PersonalAccount.objects.all().order_by("name")
 
     for account in accounts:
         account_name: str = account.name
@@ -72,3 +73,26 @@ def get_monthly_report_data(month: int, year: int) -> List[Dict[str, Any]]:
         })
 
     return report
+
+
+def get_account_summary_report(month: int, year: int) -> pd.DataFrame:
+    report_data = get_monthly_report_data(month, year)
+    
+    formatted_data = [
+        {
+            "Account Summary": row["account_name"],
+            "Opening Balance": round(row["opening_balance"], 2),
+            "Debit": round(row["debit"], 2),
+            "Credit": round(row["credit"], 2),
+            "Closing Balance": round(row["closing_balance"], 2),
+        }
+        for row in report_data
+    ]
+    formatted_data.append({
+        "Account Summary": "Total",
+        "Opening Balance": "",
+        "Debit": "",
+        "Credit": "",
+        "Closing Balance": sum(x["Closing Balance"] for x in formatted_data),
+    })
+    return pd.DataFrame(formatted_data)

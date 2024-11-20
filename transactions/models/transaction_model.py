@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import PersonalAccount
+from transactions.models.category_model import SubCategory
 
 
 class Transaction(models.Model):
@@ -10,7 +11,7 @@ class Transaction(models.Model):
 
     # Category and subcategory
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
-    sub_category = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True, blank=True)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     # Nominal account choices
     NOMINAL_ACCOUNT_CHOICES = [
