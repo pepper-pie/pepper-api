@@ -1,6 +1,6 @@
 import pandas as pd
 from transactions.models import Transaction
-from utils.excel_styling import sentence_case
+from utils.string_utils import sentence_case
 
 
 def transaction_report(month: int, year: int) -> pd.DataFrame:
