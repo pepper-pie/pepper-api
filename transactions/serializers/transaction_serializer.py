@@ -1,3 +1,4 @@
+from decimal import Decimal
 import pandas as pd
 from rest_framework import serializers
 from transactions.models import Category, SubCategory
@@ -21,13 +22,13 @@ class TransactionSerializer(serializers.Serializer):
     category = serializers.SlugRelatedField(
         queryset=Category.objects.all(),
         slug_field="name",  # Match by 'name'
-        required=False,
+        required=False,  # Assume this field is mandatory,
         allow_null=True
     )
     sub_category = serializers.SlugRelatedField(
         queryset=SubCategory.objects.all(),
         slug_field="name",  # Match by 'name'
-        required=False,
+        required=False, # Assume this field is mandatory
         allow_null=True
     )
     personal_account = serializers.SlugRelatedField(
@@ -54,6 +55,11 @@ class TransactionSerializer(serializers.Serializer):
         return resolved_value
 
     def validate(self, data):
+
+        data['credit_amount'] = round(data['credit_amount'], 2) if isinstance(data['credit_amount'], (int, float, Decimal)) else None
+        data['debit_amount'] = round(data['debit_amount'], 2) if isinstance(data['debit_amount'], (int, float, Decimal)) else None
+        
+        
         """Custom validation for fields."""
         debit = data.get("debit_amount")
         credit = data.get("credit_amount")
@@ -71,8 +77,26 @@ class TransactionSerializer(serializers.Serializer):
         return data
     
     def to_internal_value(self, data):
+        """Handle category and subcategory get_or_create logic."""
+        category_name = data.get('category')
+        sub_category_name = data.get('sub_category')
+
+        # Get or create category
+        if category_name:
+            category, _ = Category.objects.get_or_create(name=category_name.strip())
+            data['category'] = category.name
+
+        # Get or create subcategory
+        if sub_category_name and category_name:
+            sub_category, _ = SubCategory.objects.get_or_create(
+                name=sub_category_name.strip(),
+                category=category
+            )
+            data['sub_category'] = sub_category.name
         
         data['credit_amount'] = round(data['credit_amount'], 2) if isinstance(data['credit_amount'], (int, float)) else None
         data['debit_amount'] = round(data['debit_amount'], 2) if isinstance(data['debit_amount'], (int, float)) else None
         data['date'] = data['date'].strftime(datetime_utils.DEFAULT_DATE_FORMAT)
         return super().to_internal_value(data)
+    
+    

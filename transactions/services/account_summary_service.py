@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 
-def get_monthly_report_data(month: int, year: int) -> List[Dict[str, Any]]:
+def get_account_summary_report_data(month: int, year: int) -> List[Dict[str, Any]]:
     """
     Generate a monthly report of transactions for each account.
 
@@ -64,19 +64,20 @@ def get_monthly_report_data(month: int, year: int) -> List[Dict[str, Any]]:
         total_credit: Decimal = transaction_data.get("total_credit", Decimal("0.00"))
         closing_balance: Decimal = opening_balance + total_credit - total_debit
 
-        report.append({
-            "account_name": account_name,
-            "opening_balance": round(opening_balance, 2),
-            "debit": round(total_debit, 2),
-            "credit": round(total_credit, 2),
-            "closing_balance": round(closing_balance, 2),
-        })
+        if (round(opening_balance, 2) != 0 or round(total_debit, 2) != 0 or round(total_credit, 2) != 0):
+            report.append({
+                "account_name": account_name,
+                "opening_balance": round(opening_balance, 2),
+                "debit": round(total_debit, 2),
+                "credit": round(total_credit, 2),
+                "closing_balance": round(closing_balance, 2),
+            })
 
     return report
 
 
 def get_account_summary_report(month: int, year: int) -> pd.DataFrame:
-    report_data = get_monthly_report_data(month, year)
+    report_data = get_account_summary_report_data(month, year)
     
     formatted_data = [
         {

@@ -1,13 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
-from ..services.account_summary_service import get_account_summary_report, get_monthly_report_data
+from ..services.account_summary_service import get_account_summary_report, get_account_summary_report_data
 import pandas as pd
 import io
 
 
 @api_view(["GET"])
-def monthly_report(request):
+def account_summary_report(request):
     """
     Generate a monthly report of transactions for each account.
     Returns the report in JSON, Excel, or CSV format based on the 'format' query parameter.
@@ -28,7 +28,7 @@ def monthly_report(request):
 
     if output_format == "json":
         # Fetch the data
-        report_data = get_monthly_report_data(month_int, year_int)
+        report_data = get_account_summary_report_data(month_int, year_int)
 
         if not report_data:
             return Response({"error": "No data available for the given month and year."}, status=404)

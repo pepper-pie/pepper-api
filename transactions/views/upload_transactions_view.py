@@ -1,3 +1,4 @@
+import traceback
 from django.http import HttpResponse
 import re
 import pandas as pd
@@ -94,7 +95,10 @@ def upload_transactions(request):
         return Response({"message": "Transactions uploaded successfully."}, status=status.HTTP_201_CREATED)
 
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     finally:
         # Clean up temporary file
