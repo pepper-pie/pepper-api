@@ -18,6 +18,7 @@ class Transaction(models.Model):
         ('EXPENSE', 'Expense'),
         ('HOME', 'Home'),
         ('GAIN', 'Gain'),
+        ('INCOME', 'Income'),
         ('CREDIT_CARD', 'Credit Card'),
         ('SALARY', 'Salary'),
         ('INVESTMENT', 'Investment'),
