@@ -10,8 +10,8 @@ class Transaction(models.Model):
     credit_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     # Category and subcategory
-    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey('Category', on_delete=models.RESTRICT, null=True, blank=True)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.RESTRICT, null=True, blank=True)
 
     # Nominal account choices
     NOMINAL_ACCOUNT_CHOICES = [

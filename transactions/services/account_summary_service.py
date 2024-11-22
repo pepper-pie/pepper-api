@@ -27,10 +27,8 @@ def get_account_summary_report_data(month: int, year: int) -> List[Dict[str, Any
         "personal_account__name"
     ).annotate(
         opening_balance=Coalesce(
-            Sum(
-                F("credit_amount") - F("debit_amount"),
-                output_field=DecimalField(max_digits=10, decimal_places=2),
-            ),
+            Sum(F("credit_amount"), output_field=DecimalField(max_digits=10, decimal_places=2)) 
+            - Sum(F("debit_amount"), output_field=DecimalField(max_digits=10, decimal_places=2)),
             Decimal("0.00"),
         )
     )

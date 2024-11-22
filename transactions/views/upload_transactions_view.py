@@ -76,21 +76,27 @@ def upload_transactions(request):
                 response = HttpResponse(f.read(), content_type="application/octet-stream")
                 response['Content-Disposition'] = f'attachment; filename="{os.path.basename(error_file_path)}"'
                 return response
+            
+        transaction_objects = []
 
         # Save valid rows to the database
-        with transaction.atomic():
-            for data in valid_rows:
-                Transaction.objects.create(
-                    date=data['date'],
-                    narration=data['narration'],
-                    debit_amount=data['debit_amount'] or 0.0,
-                    credit_amount=data['credit_amount'] or 0.0,
-                    category=data['category'],  # Resolved by the serializer
-                    sub_category=data['sub_category'],  # Resolved by the serializer
-                    personal_account=data['personal_account'],  # Resolved by the serializer
-                    nominal_account=data['nominal_account'],
-                    running_balance=0.00  # Default, signals can update this later
-                )
+    
+        for data in valid_rows:
+            transaction_objects.append(Transaction(
+                date=data['date'],
+                narration=data['narration'],
+                debit_amount=data['debit_amount'] or 0.0,
+                credit_amount=data['credit_amount'] or 0.0,
+                category=data['category'],  # Resolved by the serializer
+                sub_category=data['sub_category'],  # Resolved by the serializer
+                personal_account=data['personal_account'],  # Resolved by the serializer
+                nominal_account=data['nominal_account'],
+                running_balance=0.00  # Default, signals can update this later
+            ))
+            
+        print("Objects Creation Completed")
+            
+        Transaction.objects.bulk_create(transaction_objects, ignore_conflicts=False)
 
         return Response({"message": "Transactions uploaded successfully."}, status=status.HTTP_201_CREATED)
 

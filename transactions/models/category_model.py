@@ -10,7 +10,7 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     name = models.CharField(max_length=255, unique=True)  # SubCategory name
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategories")  # Link to Category
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT, related_name="subcategories")  # Link to Category
 
     class Meta:
         unique_together = ('name', 'category')  # Ensure unique SubCategory per Category
